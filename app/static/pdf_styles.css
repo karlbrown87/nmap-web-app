@@ -1,0 +1,39 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    margin: 20px;
+    line-height: 1.6;
+}
+
+.pdf-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+td {
+    vertical-align: top;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nmap Web Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Nmap Web Scanner</h1>
+        </div>
+    </header>
+    <main class="main-content">
+        <div class="container">
+            <!-- Form Section -->
+            <section class="scanner-card">
+                <h2>Scan Your Target</h2>
+                <form method="POST" action="/" class="scanner-form">
+                    <label for="target">Target:</label>
+                    <input type="text" id="target" name="target" required placeholder="Enter IP or domain">
+                    
+                    <label for="scan_type">Scan Type:</label>
+                    <select id="scan_type" name="scan_type">
+                        <option value="quick">Quick Scan</option>
+                        <option value="full">Full Scan</option>
+                    </select>
+                    
+                    <button type="submit" class="btn">Scan</button>
+                </form>
+            </section>
+
+            <!-- Results Section -->
+            {% if scan_results %}
+            <section class="results-card">
+                <h2>Scan Results</h2>
+                <div class="results-content">
+                    {% if scan_results is string %}
+                        <pre>{{ scan_results }}</pre>
+                    {% else %}
+                        <pre>
+                            Host: {{ scan_results['hostnames'][0]['name'] if scan_results['hostnames'] else 'N/A' }}
+                            IP Address: {{ scan_results['addresses'].get('ipv4', 'N/A') }}
+                            State: {{ scan_results['status'].get('state', 'N/A') }}
+                            {% for port, details in scan_results['tcp'].items() %}
+                                Port: {{ port }}
+                                State: {{ details['state'] }}
+                                Service: {{ details['name'] }}
+                                Version: {{ details.get('version', 'N/A') }}
+                                Product: {{ details.get('product', 'N/A') }}
+                                Extra Info: {{ details.get('extrainfo', 'N/A') }}
+                            {% endfor %}
+                        </pre>
+                    {% endif %}
+                </div>
+                <!-- Export Button -->
+                <form method="POST" action="/export">
+                    <input type="hidden" name="scan_results" value="{{ scan_results }}">
+                    <button type="submit" class="btn export-btn">Export to PDF</button>
+                </form>
+            </section>
+            {% endif %}
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Nmap Web Scanner. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
